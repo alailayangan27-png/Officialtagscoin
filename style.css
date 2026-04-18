@@ -17,7 +17,7 @@ body::before {
   position: fixed;
   width: 700px;
   height: 700px;
-  background: url('/logo.png') no-repeat center;
+  background: url('/tagslogo.png') no-repeat center;
   background-size: contain;
   opacity: 0.05;
   top: 50%;
