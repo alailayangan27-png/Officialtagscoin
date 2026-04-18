@@ -8,6 +8,12 @@ document.getElementById("connectBtn").onclick = async () => {
   address = w.account.address;
 };
 
+document.getElementById("tonInput").oninput = (e) => {
+  let ton = parseFloat(e.target.value) || 0;
+  document.getElementById("tagsOutput").innerText =
+    (ton * CONFIG.RATE) + " TAGS";
+};
+
 document.getElementById("mintBtn").onclick = async () => {
   const ton = parseFloat(document.getElementById("tonInput").value);
 
@@ -15,15 +21,15 @@ document.getElementById("mintBtn").onclick = async () => {
   if (ton < CONFIG.MIN) return alert("Min 1 TON");
   if (ton > CONFIG.MAX) return alert("Max 100 TON");
 
-  const tx = await sendTON(ton, CONFIG.RECEIVER);
+  await sendTON(ton, CONFIG.RECEIVER);
 
   document.getElementById("status").innerText =
-    "Menunggu konfirmasi blockchain...";
+    "Menunggu verifikasi blockchain...";
 
-  await verifyTx(address, ton);
+  await verify(address, ton);
 };
 
-async function verifyTx(address, ton) {
+async function verify(address, ton) {
   for (let i = 0; i < 10; i++) {
     await new Promise(r => setTimeout(r, 4000));
 
