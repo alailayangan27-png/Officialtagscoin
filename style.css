@@ -1,8 +1,8 @@
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 body{
 margin:0;
-font-family:Segoe UI,Arial;
+font-family:Inter,system-ui;
 background:radial-gradient(circle at top,#0f172a,#020617);
 color:white;
 display:flex;
@@ -14,53 +14,56 @@ min-height:100vh
 body::before{
 content:"";
 position:fixed;
-width:700px;
-height:700px;
-background:url('/tagscoilogo.png') no-repeat center;
+width:600px;
+height:600px;
+background:url('/tagscoinlogo.png') no-repeat center;
 background-size:contain;
-opacity:.07;
+opacity:.05;
 top:50%;
 left:50%;
-transform:translate(-50%,-50%);
-filter:blur(2px)
+transform:translate(-50%,-50%)
 }
 
 .container{
 width:100%;
-max-width:420px;
-padding:20px
+max-width:380px;
+padding:16px
 }
 
 .card{
 backdrop-filter:blur(20px);
-background:rgba(255,255,255,.05);
+background:rgba(255,255,255,.04);
 border-radius:20px;
-padding:25px;
-box-shadow:0 0 40px rgba(0,150,255,.15)
+padding:22px;
+border:1px solid rgba(255,255,255,.05)
 }
 
 .logo{
-width:80px;
-height:80px;
-margin:0 auto 15px;
+width:70px;
+height:70px;
+margin:0 auto 12px;
 background:url('/tagscoinlogo.png') no-repeat center;
-background-size:contain;
-filter:drop-shadow(0 0 20px #0098ea)
+background-size:contain
 }
 
 h1{
-font-size:20px;
-margin-bottom:15px
+text-align:center;
+font-size:18px;
+margin-bottom:16px
+}
+
+button,input{
+outline:none;
+border:none;
+box-shadow:none
 }
 
 button{
 width:100%;
-padding:14px;
+padding:13px;
 border-radius:14px;
-border:none;
-font-weight:bold;
-cursor:pointer;
-transition:.2s
+font-weight:600;
+cursor:pointer
 }
 
 #connectBtn{
@@ -70,24 +73,21 @@ margin-bottom:10px
 
 #mintBtn{
 background:linear-gradient(135deg,#00c6ff,#0072ff);
-margin-top:10px
-}
-
-button:active{
-transform:scale(.96)
+margin-top:12px
 }
 
 .quick{
 display:flex;
 gap:6px;
-margin-top:8px
+margin:10px 0
 }
 
 .quickBtn{
 flex:1;
 padding:8px;
 border-radius:10px;
-background:rgba(255,255,255,.08)
+background:rgba(255,255,255,.06);
+color:white
 }
 
 .quickBtn.active{
@@ -97,39 +97,37 @@ background:linear-gradient(135deg,#0098ea,#0066ff)
 .amount-box{
 display:flex;
 align-items:center;
-margin-top:12px;
-gap:10px
+gap:8px
 }
 
 .amount-box button{
-width:45px;
-height:45px;
+width:44px;
+height:44px;
 border-radius:50%;
-font-size:20px;
-background:linear-gradient(135deg,#0098ea,#0066ff)
+background:rgba(255,255,255,.08)
 }
 
 #tonInput{
 flex:1;
 text-align:center;
-font-size:18px;
+font-size:16px;
+background:rgba(255,255,255,.05);
 border-radius:12px;
-border:none;
-background:rgba(255,255,255,.08);
 color:white;
 padding:10px
 }
 
 #tagsOutput{
 margin-top:10px;
-font-weight:bold;
+text-align:center;
+font-weight:600;
 color:#38bdf8
 }
 
 .loader{
-width:30px;
-height:30px;
-border:3px solid rgba(255,255,255,.2);
+width:26px;
+height:26px;
+border:3px solid rgba(255,255,255,.15);
 border-top:3px solid #00c6ff;
 border-radius:50%;
 margin:10px auto;
@@ -138,12 +136,12 @@ animation:spin 1s linear infinite
 }
 
 @keyframes spin{
-0%{transform:rotate(0)}
-100%{transform:rotate(360deg)}
+to{transform:rotate(360deg)}
 }
 
 #status{
-margin-top:10px;
+text-align:center;
 font-size:13px;
-opacity:.8
+opacity:.7;
+margin-top:8px
 }
