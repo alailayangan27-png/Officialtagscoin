@@ -5,7 +5,7 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN
 });
 
-const RECEIVER = "EQGANTI_DENGAN_WALLET_KAMU";
+const RECEIVER = "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX";
 
 export default async function handler(req, res) {
   const { address, ton } = JSON.parse(req.body);
