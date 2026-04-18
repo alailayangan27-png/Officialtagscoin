@@ -6,9 +6,13 @@ export async function connectWallet(){
 return await tonConnectUI.connectWallet()
 }
 
-export async function sendTON(amount,receiver){
+export async function sendTON(amount,receiver,nonce){
 return await tonConnectUI.sendTransaction({
 validUntil:Math.floor(Date.now()/1000)+600,
-messages:[{address:receiver,amount:(amount*1e9).toString()}]
+messages:[{
+address:receiver,
+amount:(amount*1e9).toString(),
+payload:nonce
+}]
 })
 }
