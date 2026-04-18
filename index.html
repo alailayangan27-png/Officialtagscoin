@@ -6,25 +6,32 @@
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="box">
-  <h1>TAGS Presale</h1>
-
-  <button id="connectBtn">Connect Wallet</button>
-
+<div class="container">
   <div class="card">
+
+    <div class="logo"></div>
+
+    <h1>TAGS Presale</h1>
+
+    <button id="connectBtn">Connect Wallet</button>
+
     <input type="number" id="tonInput" placeholder="Min 1 TON">
+
     <p id="tagsOutput">0 TAGS</p>
+
     <button id="mintBtn">Mint</button>
-  </div>
 
-  <div class="progress">
-    <div id="bar"></div>
-  </div>
+    <div class="progress">
+      <div id="bar"></div>
+    </div>
 
-  <p id="progressText">0 / 100 TON</p>
-  <p id="status"></p>
+    <p id="progressText">0 / 100 TON</p>
+    <p id="status">Belum ada transaksi</p>
+
+  </div>
 </div>
 
 <script type="module" src="/src/app.js"></script>
