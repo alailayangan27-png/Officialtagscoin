@@ -1,52 +1,58 @@
-import { Redis } from "@upstash/redis";
+import { Redis } from "@upstash/redis"
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN
-});
+const redis=new Redis({
+url:process.env.UPSTASH_REDIS_REST_URL,
+token:process.env.UPSTASH_REDIS_REST_TOKEN
+})
 
-const RECEIVER = "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX";
+const RECEIVER="UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX"
 
-export default async function handler(req, res) {
-  const { address, ton } = JSON.parse(req.body);
+export default async function handler(req,res){
+const ip=req.headers["x-forwarded-for"]||"ip"
+const last=await redis.get("rate:"+ip)
+if(last&&Date.now()-last<3000)return res.json({error:"rate"})
+await redis.set("rate:"+ip,Date.now())
 
-  const userKey = "user:" + address;
-  let total = (await redis.get(userKey)) || 0;
+const {address,ton,nonce}=JSON.parse(req.body||"{}")
 
-  if (total + ton > 100) {
-    return res.json({ error: "Limit 100 TON" });
-  }
+if(!address||!ton||!nonce)return res.json({error:"invalid"})
+if(ton<1||ton>100)return res.json({error:"amount"})
 
-  const api = await fetch(
-    `https://toncenter.com/api/v2/getTransactions?address=${RECEIVER}&limit=20`
-  );
+const usedNonce=await redis.get("nonce:"+nonce)
+if(usedNonce)return res.json({error:"nonce"})
 
-  const data = await api.json();
+const userKey="user:"+address
+let total=(await redis.get(userKey))||0
 
-  let valid = false;
+if(total+ton>100)return res.json({error:"limit"})
 
-  for (let tx of data.result) {
-    if (!tx.in_msg) continue;
+const api=await fetch(`https://toncenter.com/api/v2/getTransactions?address=${RECEIVER}&limit=30`)
+const data=await api.json()
 
-    if (
-      tx.in_msg.source === address &&
-      Number(tx.in_msg.value) >= ton * 1e9
-    ) {
-      valid = true;
-      break;
-    }
-  }
+let valid=null
 
-  if (!valid) {
-    return res.json({ error: "Transaksi tidak ditemukan" });
-  }
+for(let tx of data.result){
+if(!tx.in_msg)continue
+const sender=tx.in_msg.source
+const value=Number(tx.in_msg.value)
+const payload=tx.in_msg.message||""
+if(sender===address&&value>=ton*1e9&&payload.includes(nonce)){
+valid=tx
+break
+}
+}
 
-  total += ton;
-  await redis.set(userKey, total);
+if(!valid)return res.json({error:"notfound"})
 
-  let global = (await redis.get("global")) || 0;
-  global += ton;
-  await redis.set("global", global);
+const hash=valid.transaction_id.hash
+const usedTx=await redis.get("tx:"+hash)
+if(usedTx)return res.json({error:"used"})
 
-  return res.json({ success: true, total });
+await redis.set("tx:"+hash,1)
+await redis.set("nonce:"+nonce,1)
+
+total+=ton
+await redis.set(userKey,total)
+
+return res.json({success:true,total})
 }
