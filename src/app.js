@@ -43,7 +43,6 @@ async function verify(address, ton) {
     if (data.success) {
       document.getElementById("status").innerText =
         `Sukses! Total kamu: ${data.total} TON`;
-      loadStats();
       return;
     }
   }
@@ -51,16 +50,3 @@ async function verify(address, ton) {
   document.getElementById("status").innerText =
     "Transaksi belum ditemukan";
 }
-
-async function loadStats() {
-  const res = await fetch("/api/stats");
-  const data = await res.json();
-
-  const percent = (data.total / 100) * 100;
-
-  document.getElementById("bar").style.width = percent + "%";
-  document.getElementById("progressText").innerText =
-    `${data.total} / 100 TON`;
-}
-
-loadStats();
