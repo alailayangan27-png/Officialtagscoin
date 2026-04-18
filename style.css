@@ -17,7 +17,7 @@ body::before {
   position: fixed;
   width: 700px;
   height: 700px;
-  background: url('/tagslogo.png') no-repeat center;
+  background: url('/tagscoin.png') no-repeat center;
   background-size: contain;
   opacity: 0.05;
   top: 50%;
@@ -46,7 +46,7 @@ body::before {
   width: 80px;
   height: 80px;
   margin: 0 auto 15px;
-  background: url('/tagslogo.png') no-repeat center;
+  background: url('/tagscoin.png') no-repeat center;
   background-size: contain;
 }
 
