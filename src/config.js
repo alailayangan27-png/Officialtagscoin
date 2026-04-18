@@ -1,0 +1,6 @@
+export const CONFIG = {
+  RECEIVER: "EQGANTI_DENGAN_WALLET_KAMU",
+  MIN: 1,
+  MAX: 100,
+  RATE: 10000
+};
