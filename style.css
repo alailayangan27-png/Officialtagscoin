@@ -16,7 +16,7 @@ content:"";
 position:fixed;
 width:600px;
 height:600px;
-background:url('/tagscoinlogo.png') no-repeat center;
+background:url('/logo.png') no-repeat center;
 background-size:contain;
 opacity:.05;
 top:50%;
@@ -63,7 +63,8 @@ width:100%;
 padding:13px;
 border-radius:14px;
 font-weight:600;
-cursor:pointer
+cursor:pointer;
+color:white
 }
 
 #connectBtn{
@@ -87,7 +88,8 @@ flex:1;
 padding:8px;
 border-radius:10px;
 background:rgba(255,255,255,.06);
-color:white
+color:white;
+font-size:12px
 }
 
 .quickBtn.active{
@@ -100,12 +102,22 @@ align-items:center;
 gap:8px
 }
 
-.amount-box button{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#0098ea,#0066ff);
-  color:white;
+#plusBtn{
+width:44px;
+height:44px;
+border-radius:50%;
+background:linear-gradient(135deg,#00c6ff,#0072ff);
+color:white;
+font-size:18px
+}
+
+#minusBtn{
+width:44px;
+height:44px;
+border-radius:50%;
+background:rgba(255,255,255,.08);
+color:white;
+font-size:18px
 }
 
 #tonInput{
