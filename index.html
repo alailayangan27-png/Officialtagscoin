@@ -2,22 +2,29 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>TAGS Presale</title>
+<title>TAGS Launchpad</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+<div class="app">
+
+<header class="header">
+  <div class="logo"></div>
+  <div id="ton-connect"></div>
+</header>
+
+<main class="main">
+
   <div class="card">
 
-    <div class="logo"></div>
-
-    <h1>TAGS Presale</h1>
-
-    <div id="ton-connect"></div>
+    <h2>TAGS Presale</h2>
+    <p class="desc">1 TON = 10,000 TAGS</p>
 
     <div class="quick">
       <button class="quickBtn" data-value="1">1</button>
@@ -33,7 +40,7 @@
       <button id="plusBtn">+</button>
     </div>
 
-    <p id="tagsOutput">10000 TAGS</p>
+    <div class="result" id="tagsOutput">10000 TAGS</div>
 
     <button id="mintBtn">Mint</button>
 
@@ -42,6 +49,13 @@
     <p id="status">Not connected</p>
 
   </div>
+
+</main>
+
+<footer class="footer">
+  TAGS Launchpad © 2026
+</footer>
+
 </div>
 
 <script type="module" src="/src/app.js"></script>
