@@ -9,67 +9,35 @@ const RECEIVER="UQA6gWiJPP6pTMkc6mpVMSzNW21n0UfCpz4chW4Sts3_nJEU"
 
 export default async function handler(req,res){
 try{
-const ip=req.headers["x-forwarded-for"]||"ip"
-const last=await redis.get("rate:"+ip)
-if(last&&Date.now()-last<3000)return res.json({error:"rate"})
-await redis.set("rate:"+ip,Date.now())
+const{address,amount,nonce}=req.body
 
-const {address,ton,nonce}=JSON.parse(req.body||"{}")
+const key="mint:"+address
 
-if(!address||!ton||!nonce)return res.json({error:"invalid"})
-if(ton<1||ton>100)return res.json({error:"amount"})
-
-const usedNonce=await redis.get("nonce:"+nonce)
-if(usedNonce)return res.json({error:"nonce"})
-
-const userKey="user:"+address
-let total=(await redis.get(userKey))||0
-
-if(total+ton>100)return res.json({error:"limit"})
-
-const api=await fetch(`https://toncenter.com/api/v2/getTransactions?address=${RECEIVER}&limit=30`)
-const data=await api.json()
-
-let valid=null
-
-for(let tx of data.result){
-if(!tx.in_msg)continue
-const sender=tx.in_msg.source
-const value=Number(tx.in_msg.value)
-const payload=tx.in_msg.message||""
-if(sender===address&&value>=ton*1e9&&payload.includes(nonce)){
-valid=tx
-break
-}
+const existing=await redis.get(key)
+if(existing){
+return res.json({success:false,error:"Already minted"})
 }
 
-if(!valid)return res.json({error:"notfound"})
+const check=await fetch(`https://toncenter.com/api/v2/getTransactions?address=${RECEIVER}&limit=20`)
+const json=await check.json()
 
-const hash=valid.transaction_id.hash
-const usedTx=await redis.get("tx:"+hash)
-if(usedTx)return res.json({error:"used"})
+const txs=json.result||[]
 
-await redis.set("tx:"+hash,1)
-await redis.set("nonce:"+nonce,1)
+const found=txs.find(tx=>{
+return tx.in_msg &&
+tx.in_msg.source===address &&
+tx.in_msg.value===Math.floor(amount*1e9).toString()
+})
 
-total+=ton
-await redis.set(userKey,total)
-
-let global=(await redis.get("global"))||0
-global+=ton
-await redis.set("global",global)
-
-let users=(await redis.get("users"))||0
-const exists=await redis.get("user_exists:"+address)
-
-if(!exists){
-users+=1
-await redis.set("users",users)
-await redis.set("user_exists:"+address,1)
+if(!found){
+return res.json({success:false,error:"TX not found"})
 }
 
-return res.json({success:true,total})
+await redis.set(key,amount)
+
+return res.json({success:true})
+
 }catch(e){
-return res.json({error:"server"})
+return res.json({success:false})
 }
 }
