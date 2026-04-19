@@ -1,27 +1,26 @@
-let tonConnectUI=null
+let ui=null
 
 function init(){
-if(!tonConnectUI){
-tonConnectUI=new window.TON_CONNECT_UI.TonConnectUI({
-manifestUrl:window.location.origin+"/tonconnect-manifest.json"
+if(!ui){
+ui=new window.TON_CONNECT_UI.TonConnectUI({
+manifestUrl:window.location.origin+"/tonconnect-manifest.json",
+buttonRootId:"ton-connect"
 })
 }
-return tonConnectUI
+return ui
 }
 
-export async function connectWallet(){
-const ui=init()
-return await ui.connectWallet()
+export function getWallet(){
+return init().wallet
 }
 
 export async function sendTON(amount,receiver,nonce){
-const ui=init()
-return await ui.sendTransaction({
+return await init().sendTransaction({
 validUntil:Math.floor(Date.now()/1000)+600,
 messages:[{
 address:receiver,
 amount:(amount*1e9).toString(),
-payload:nonce
+payload:btoa(nonce)
 }]
 })
 }
