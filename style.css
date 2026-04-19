@@ -1,19 +1,47 @@
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent
+}
 
 body{
 margin:0;
 font-family:Inter,system-ui;
 background:radial-gradient(circle at top,#0f172a,#020617);
 color:white;
-display:flex;
-justify-content:center;
-align-items:center;
 min-height:100vh
 }
 
-.container{width:100%;max-width:380px;padding:16px}
+.app{
+display:flex;
+flex-direction:column;
+min-height:100vh
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 16px
+}
+
+.logo{
+width:50px;
+height:50px;
+background:url('/tagscoinlogo.png') no-repeat center;
+background-size:contain
+}
+
+.main{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:16px
+}
 
 .card{
+width:100%;
+max-width:380px;
 backdrop-filter:blur(20px);
 background:rgba(255,255,255,.04);
 border-radius:20px;
@@ -21,24 +49,92 @@ padding:22px;
 border:1px solid rgba(255,255,255,.05)
 }
 
-.logo{
-width:70px;
-height:70px;
-margin:0 auto 12px;
-background:url('/tagscoinlogo.png') no-repeat center;
-background-size:contain
+h2{
+text-align:center;
+margin:0 0 6px;
+font-size:18px
 }
 
-h1{text-align:center;font-size:18px;margin-bottom:16px}
+.desc{
+text-align:center;
+opacity:.7;
+font-size:13px;
+margin-bottom:12px
+}
 
-button,input{outline:none;border:none;box-shadow:none}
+.quick{
+display:flex;
+gap:6px;
+margin-bottom:10px
+}
+
+.quickBtn{
+flex:1;
+padding:8px;
+border-radius:10px;
+background:rgba(255,255,255,.06);
+color:white;
+border:none;
+font-size:12px
+}
+
+.quickBtn.active{
+background:linear-gradient(135deg,#0098ea,#0066ff)
+}
+
+.amount-box{
+display:flex;
+align-items:center;
+gap:8px;
+margin-bottom:10px
+}
+
+#plusBtn{
+width:44px;
+height:44px;
+border-radius:50%;
+background:linear-gradient(135deg,#00c6ff,#0072ff);
+color:white;
+font-size:18px;
+border:none
+}
+
+#minusBtn{
+width:44px;
+height:44px;
+border-radius:50%;
+background:rgba(255,255,255,.08);
+color:white;
+font-size:18px;
+border:none
+}
+
+#tonInput{
+flex:1;
+text-align:center;
+font-size:16px;
+background:rgba(255,255,255,.05);
+border-radius:12px;
+color:white;
+padding:10px;
+border:none
+}
+
+.result{
+text-align:center;
+font-size:18px;
+font-weight:600;
+color:#38bdf8;
+margin-top:6px
+}
 
 button{
 width:100%;
 padding:13px;
 border-radius:14px;
 font-weight:600;
-color:white
+color:white;
+border:none
 }
 
 #mintBtn{
@@ -46,45 +142,9 @@ background:linear-gradient(135deg,#00c6ff,#0072ff);
 margin-top:12px
 }
 
-.quick{display:flex;gap:6px;margin:10px 0}
-
-.quickBtn{
-flex:1;
-padding:8px;
-border-radius:10px;
-background:rgba(255,255,255,.06);
-color:white
-}
-
-.quickBtn.active{
-background:linear-gradient(135deg,#0098ea,#0066ff)
-}
-
-.amount-box{display:flex;align-items:center;gap:8px}
-
-#plusBtn{
-width:44px;height:44px;border-radius:50%;
-background:linear-gradient(135deg,#00c6ff,#0072ff)
-}
-
-#minusBtn{
-width:44px;height:44px;border-radius:50%;
-background:rgba(255,255,255,.08)
-}
-
-#tonInput{
-flex:1;text-align:center;font-size:16px;
-background:rgba(255,255,255,.05);
-border-radius:12px;color:white;padding:10px
-}
-
-#tagsOutput{
-margin-top:10px;text-align:center;
-font-weight:600;color:#38bdf8
-}
-
 .loader{
-width:26px;height:26px;
+width:26px;
+height:26px;
 border:3px solid rgba(255,255,255,.15);
 border-top:3px solid #00c6ff;
 border-radius:50%;
@@ -93,6 +153,20 @@ display:none;
 animation:spin 1s linear infinite
 }
 
-@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spin{
+to{transform:rotate(360deg)}
+}
 
-#status{text-align:center;font-size:13px;opacity:.7;margin-top:8px}
+#status{
+text-align:center;
+font-size:13px;
+opacity:.7;
+margin-top:8px
+}
+
+.footer{
+text-align:center;
+font-size:12px;
+opacity:.5;
+padding:10px
+}
