@@ -11,24 +11,7 @@ align-items:center;
 min-height:100vh
 }
 
-body::before{
-content:"";
-position:fixed;
-width:600px;
-height:600px;
-background:url('/logo.png') no-repeat center;
-background-size:contain;
-opacity:.05;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%)
-}
-
-.container{
-width:100%;
-max-width:380px;
-padding:16px
-}
+.container{width:100%;max-width:380px;padding:16px}
 
 .card{
 backdrop-filter:blur(20px);
@@ -46,30 +29,16 @@ background:url('/tagscoinlogo.png') no-repeat center;
 background-size:contain
 }
 
-h1{
-text-align:center;
-font-size:18px;
-margin-bottom:16px
-}
+h1{text-align:center;font-size:18px;margin-bottom:16px}
 
-button,input{
-outline:none;
-border:none;
-box-shadow:none
-}
+button,input{outline:none;border:none;box-shadow:none}
 
 button{
 width:100%;
 padding:13px;
 border-radius:14px;
 font-weight:600;
-cursor:pointer;
 color:white
-}
-
-#connectBtn{
-background:linear-gradient(135deg,#0098ea,#0066ff);
-margin-bottom:10px
 }
 
 #mintBtn{
@@ -77,67 +46,45 @@ background:linear-gradient(135deg,#00c6ff,#0072ff);
 margin-top:12px
 }
 
-.quick{
-display:flex;
-gap:6px;
-margin:10px 0
-}
+.quick{display:flex;gap:6px;margin:10px 0}
 
 .quickBtn{
 flex:1;
 padding:8px;
 border-radius:10px;
 background:rgba(255,255,255,.06);
-color:white;
-font-size:12px
+color:white
 }
 
 .quickBtn.active{
 background:linear-gradient(135deg,#0098ea,#0066ff)
 }
 
-.amount-box{
-display:flex;
-align-items:center;
-gap:8px
-}
+.amount-box{display:flex;align-items:center;gap:8px}
 
 #plusBtn{
-width:44px;
-height:44px;
-border-radius:50%;
-background:linear-gradient(135deg,#00c6ff,#0072ff);
-font-size:18px
+width:44px;height:44px;border-radius:50%;
+background:linear-gradient(135deg,#00c6ff,#0072ff)
 }
 
 #minusBtn{
-width:44px;
-height:44px;
-border-radius:50%;
-background:rgba(255,255,255,.08);
-font-size:18px
+width:44px;height:44px;border-radius:50%;
+background:rgba(255,255,255,.08)
 }
 
 #tonInput{
-flex:1;
-text-align:center;
-font-size:16px;
+flex:1;text-align:center;font-size:16px;
 background:rgba(255,255,255,.05);
-border-radius:12px;
-color:white;
-padding:10px
+border-radius:12px;color:white;padding:10px
 }
 
 #tagsOutput{
-margin-top:10px;
-text-align:center;
-font-weight:600;
-color:#38bdf8
+margin-top:10px;text-align:center;
+font-weight:600;color:#38bdf8
 }
 
 .loader{
-width:26px;
-height:26px;
+width:26px;height:26px;
 border:3px solid rgba(255,255,255,.15);
 border-top:3px solid #00c6ff;
 border-radius:50%;
@@ -146,13 +93,6 @@ display:none;
 animation:spin 1s linear infinite
 }
 
-@keyframes spin{
-to{transform:rotate(360deg)}
-}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-#status{
-text-align:center;
-font-size:13px;
-opacity:.7;
-margin-top:8px
-}
+#status{text-align:center;font-size:13px;opacity:.7;margin-top:8px}
