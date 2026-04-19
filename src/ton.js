@@ -14,13 +14,21 @@ export function getWallet(){
 return init().wallet
 }
 
-export async function sendTON(amount,receiver,nonce){
-return await init().sendTransaction({
-validUntil:Math.floor(Date.now()/1000)+600,
+export async function sendTON(amount,receiver){
+const instance=init()
+
+if(!instance.wallet){
+await instance.connectWallet()
+}
+
+await new Promise(r=>setTimeout(r,500))
+
+return await instance.sendTransaction({
+validUntil: Math.floor(Date.now()/1000) + 3600,
 messages:[{
 address:receiver,
-amount:(amount*1e9).toString(),
-payload:btoa(nonce)
+amount:(BigInt(Math.floor(amount * 1e9))).toString(),
+payload:btoa("TAGS MINT")
 }]
 })
 }
