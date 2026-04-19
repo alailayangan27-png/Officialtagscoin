@@ -1,109 +1,84 @@
-*{
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 body{
 margin:0;
 font-family:Inter,system-ui;
-background:radial-gradient(circle at top,#0f172a,#020617);
+background:#020617;
 color:white;
-min-height:100vh
+overflow:hidden
+}
+
+.bg-glow{
+position:fixed;
+width:600px;
+height:600px;
+background:radial-gradient(circle,#0098ea33,transparent 70%);
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+filter:blur(80px)
 }
 
 .app{
+min-height:100vh;
 display:flex;
-flex-direction:column;
-min-height:100vh
+flex-direction:column
 }
 
 .header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:14px 16px
+padding:16px
 }
 
 .logo{
 width:50px;
 height:50px;
-background:url('/tagscoinlogo.png') no-repeat center;
-background-size:contain
+background:url('/tagscoinlogo.png') center/contain no-repeat
 }
 
 .main{
 flex:1;
 display:flex;
 justify-content:center;
-align-items:center;
-padding:16px
+align-items:center
 }
 
 .card{
 width:100%;
-max-width:380px;
-backdrop-filter:blur(20px);
+max-width:360px;
+padding:24px;
+border-radius:22px;
 background:rgba(255,255,255,.04);
-border-radius:20px;
-padding:22px;
-border:1px solid rgba(255,255,255,.05)
+backdrop-filter:blur(25px);
+border:1px solid rgba(255,255,255,.06);
+box-shadow:0 0 40px rgba(0,150,255,.15)
 }
 
-h2{
+h1{
 text-align:center;
-margin:0 0 6px;
-font-size:18px
+margin:0;
+font-size:22px
 }
 
 .desc{
 text-align:center;
-opacity:.7;
-font-size:13px;
-margin-bottom:12px
-}
-
-.quick{
-display:flex;
-gap:6px;
-margin-bottom:10px
-}
-
-.quickBtn{
-flex:1;
-padding:8px;
-border-radius:10px;
-background:rgba(255,255,255,.06);
-color:white;
-border:none;
-font-size:12px
-}
-
-.quickBtn.active{
-background:linear-gradient(135deg,#0098ea,#0066ff)
+opacity:.6;
+margin-bottom:16px
 }
 
 .amount-box{
 display:flex;
-align-items:center;
-gap:8px;
-margin-bottom:10px
+gap:10px;
+margin-bottom:12px
 }
 
-#plusBtn{
+#plusBtn,#minusBtn{
 width:44px;
 height:44px;
 border-radius:50%;
-background:linear-gradient(135deg,#00c6ff,#0072ff);
-color:white;
-font-size:18px;
-border:none
-}
-
-#minusBtn{
-width:44px;
-height:44px;
-border-radius:50%;
-background:linear-gradient(135deg,#00c6ff,#0072ff);
+background:rgba(255,255,255,.08);
 color:white;
 font-size:18px;
 border:none
@@ -112,56 +87,65 @@ border:none
 #tonInput{
 flex:1;
 text-align:center;
-font-size:16px;
 background:rgba(255,255,255,.05);
 border-radius:12px;
 color:white;
-padding:10px;
+border:none;
+font-size:16px
+}
+
+.quick{
+display:flex;
+gap:6px;
+margin-bottom:12px
+}
+
+.quickBtn{
+flex:1;
+padding:8px;
+border-radius:10px;
+background:rgba(255,255,255,.05);
+color:white;
 border:none
+}
+
+.quickBtn.active{
+background:#0098ea
 }
 
 .result{
 text-align:center;
 font-size:18px;
-font-weight:600;
 color:#38bdf8;
-margin-top:6px
+margin:10px 0
 }
 
-button{
+.mint{
 width:100%;
-padding:13px;
+padding:14px;
 border-radius:14px;
+background:linear-gradient(135deg,#0098ea,#0066ff);
 font-weight:600;
-color:white;
 border:none
-}
-
-#mintBtn{
-background:linear-gradient(135deg,#00c6ff,#0072ff);
-margin-top:12px
 }
 
 .loader{
 width:26px;
 height:26px;
-border:3px solid rgba(255,255,255,.15);
+border:3px solid rgba(255,255,255,.1);
 border-top:3px solid #00c6ff;
 border-radius:50%;
-margin:10px auto;
+margin:12px auto;
 display:none;
 animation:spin 1s linear infinite
 }
 
-@keyframes spin{
-to{transform:rotate(360deg)}
-}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 #status{
 text-align:center;
 font-size:13px;
-opacity:.7;
-margin-top:8px
+opacity:.6
 }
 
 .social{
@@ -171,22 +155,22 @@ gap:12px;
 margin-top:14px
 }
 
-.social a{
-text-decoration:none;
-font-size:13px;
-padding:8px 14px;
-border-radius:10px;
+.icon{
+width:40px;
+height:40px;
+border-radius:50%;
 background:rgba(255,255,255,.06);
-color:white
+background-size:20px;
+background-repeat:no-repeat;
+background-position:center
 }
 
-.social a:hover{
-background:linear-gradient(135deg,#0098ea,#0066ff)
+.icon.tg{
+background-image:url('https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg');
+filter:invert(1)
 }
 
-.footer{
-text-align:center;
-font-size:12px;
-opacity:.5;
-padding:10px
+.icon.x{
+background-image:url('https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg');
+filter:invert(1)
 }
