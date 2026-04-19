@@ -1,13 +1,22 @@
-export const tonConnectUI=new TON_CONNECT_UI.TonConnectUI({
+let tonConnectUI=null
+
+function init(){
+if(!tonConnectUI){
+tonConnectUI=new window.TON_CONNECT_UI.TonConnectUI({
 manifestUrl:window.location.origin+"/tonconnect-manifest.json"
 })
+}
+return tonConnectUI
+}
 
 export async function connectWallet(){
-return await tonConnectUI.connectWallet()
+const ui=init()
+return await ui.connectWallet()
 }
 
 export async function sendTON(amount,receiver,nonce){
-return await tonConnectUI.sendTransaction({
+const ui=init()
+return await ui.sendTransaction({
 validUntil:Math.floor(Date.now()/1000)+600,
 messages:[{
 address:receiver,
