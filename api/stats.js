@@ -6,23 +6,17 @@ token:process.env.UPSTASH_REDIS_REST_TOKEN
 })
 
 export default async function handler(req,res){
-try{
-const total=(await redis.get("global"))||0
-const users=(await redis.get("users"))||0
+const keys=await redis.keys("mint:*")
 
-let top=[]
-const keys=await redis.keys("user:*")
+let total=0
 
-for(let k of keys){
-const value=await redis.get(k)
-top.push({address:k.replace("user:",""),total:value||0})
+for(const k of keys){
+const v=await redis.get(k)
+total+=Number(v||0)
 }
 
-top.sort((a,b)=>b.total-a.total)
-top=top.slice(0,10)
-
-return res.json({total,users,top})
-}catch(e){
-return res.json({error:"server"})
-}
+res.json({
+totalTON:total,
+wallets:keys.length
+})
 }
