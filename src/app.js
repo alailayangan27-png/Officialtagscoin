@@ -16,10 +16,6 @@ if(v>CONFIG.MAX)return CONFIG.MAX
 return v
 }
 
-function nonce(){
-return Math.random().toString(36)+Date.now()
-}
-
 function update(){
 input.value=ton
 tags.innerText=(ton*CONFIG.RATE)+" TAGS"
@@ -33,7 +29,7 @@ setInterval(()=>{
 const w=getWallet()
 if(w){
 address=w.account.address
-status.innerText="Connected"
+status.innerText="Wallet Connected"
 }
 },1000)
 
@@ -62,31 +58,20 @@ update()
 document.getElementById("mintBtn").onclick=async()=>{
 if(!address)return alert("Connect wallet first")
 
-const n=nonce()
-
 loader.style.display="block"
-status.innerText="Confirm transaction..."
+status.innerText="Waiting wallet confirmation..."
 
-await sendTON(ton,CONFIG.RECEIVER,n)
-
-status.innerText="Waiting verification..."
-
-await verify(address,ton,n)
-}
-
-async function verify(address,ton,nonce){
-for(let i=0;i<10;i++){
-await new Promise(r=>setTimeout(r,4000))
-const res=await fetch("/api/verify",{method:"POST",body:JSON.stringify({address,ton,nonce})})
-const data=await res.json()
-if(data.success){
+try{
+await sendTON(ton,CONFIG.RECEIVER)
+status.innerText="Transaction sent, verifying..."
+}catch(e){
+console.log(e)
+status.innerText="Transaction canceled"
 loader.style.display="none"
-status.innerText="Success "+data.total+" TON"
 return
 }
-}
+
 loader.style.display="none"
-status.innerText="Not found"
 }
 
 update()
