@@ -164,6 +164,26 @@ opacity:.7;
 margin-top:8px
 }
 
+.social{
+display:flex;
+justify-content:center;
+gap:12px;
+margin-top:14px
+}
+
+.social a{
+text-decoration:none;
+font-size:13px;
+padding:8px 14px;
+border-radius:10px;
+background:rgba(255,255,255,.06);
+color:white
+}
+
+.social a:hover{
+background:linear-gradient(135deg,#0098ea,#0066ff)
+}
+
 .footer{
 text-align:center;
 font-size:12px;
