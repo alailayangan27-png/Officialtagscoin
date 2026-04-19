@@ -1,34 +1,25 @@
-let ui=null
-
-function init(){
-if(!ui){
-ui=new window.TON_CONNECT_UI.TonConnectUI({
-manifestUrl:window.location.origin+"/tonconnect-manifest.json",
-buttonRootId:"ton-connect"
+const tonConnectUI = new window.TON_CONNECT_UI.TonConnectUI({
+manifestUrl: window.location.origin + "/tonconnect-manifest.json",
+buttonRootId: "ton-connect"
 })
-}
-return ui
-}
 
 export function getWallet(){
-return init().wallet
+return tonConnectUI.wallet
 }
 
-export async function sendTON(amount,receiver){
-const instance=init()
-
-if(!instance.wallet){
-await instance.connectWallet()
+export async function sendTON(amount, receiver, payload){
+if(!tonConnectUI.wallet){
+await tonConnectUI.connectWallet()
 }
 
-await new Promise(r=>setTimeout(r,500))
-
-return await instance.sendTransaction({
-validUntil: Math.floor(Date.now()/1000) + 3600,
-messages:[{
+return await tonConnectUI.sendTransaction({
+validUntil: Math.floor(Date.now()/1000)+600,
+messages:[
+{
 address:receiver,
-amount:(BigInt(Math.floor(amount * 1e9))).toString(),
-payload:btoa("TAGS MINT")
-}]
+amount:(Math.floor(amount*1e9)).toString(),
+payload:btoa(payload)
+}
+]
 })
 }
