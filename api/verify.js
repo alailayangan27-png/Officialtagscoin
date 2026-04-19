@@ -1,97 +1,75 @@
 import { Redis } from "@upstash/redis"
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN
+const redis=new Redis({
+url:process.env.UPSTASH_REDIS_REST_URL,
+token:process.env.UPSTASH_REDIS_REST_TOKEN
 })
 
-const RECEIVER = "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX"
+const RECEIVER="UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX"
 
-export default async function handler(req, res) {
-  try {
-    const ip = req.headers["x-forwarded-for"] || "ip"
-    const last = await redis.get("rate:" + ip)
-    if (last && Date.now() - last < 3000) {
-      return res.json({ error: "rate" })
-    }
-    await redis.set("rate:" + ip, Date.now())
+export default async function handler(req,res){
+try{
+const ip=req.headers["x-forwarded-for"]||"ip"
+const last=await redis.get("rate:"+ip)
+if(last&&Date.now()-last<3000)return res.json({error:"rate"})
+await redis.set("rate:"+ip,Date.now())
 
-    const { address, ton, nonce } = JSON.parse(req.body || "{}")
+const {address,ton,nonce}=JSON.parse(req.body||"{}")
 
-    if (!address || !ton || !nonce) {
-      return res.json({ error: "invalid" })
-    }
+if(!address||!ton||!nonce)return res.json({error:"invalid"})
+if(ton<1||ton>100)return res.json({error:"amount"})
 
-    if (ton < 1 || ton > 100) {
-      return res.json({ error: "amount" })
-    }
+const usedNonce=await redis.get("nonce:"+nonce)
+if(usedNonce)return res.json({error:"nonce"})
 
-    const usedNonce = await redis.get("nonce:" + nonce)
-    if (usedNonce) {
-      return res.json({ error: "nonce" })
-    }
+const userKey="user:"+address
+let total=(await redis.get(userKey))||0
 
-    const userKey = "user:" + address
-    let total = (await redis.get(userKey)) || 0
+if(total+ton>100)return res.json({error:"limit"})
 
-    if (total + ton > 100) {
-      return res.json({ error: "limit" })
-    }
+const api=await fetch(`https://toncenter.com/api/v2/getTransactions?address=${RECEIVER}&limit=30`)
+const data=await api.json()
 
-    const api = await fetch(`https://toncenter.com/api/v2/getTransactions?address=${RECEIVER}&limit=30`)
-    const data = await api.json()
+let valid=null
 
-    let valid = null
+for(let tx of data.result){
+if(!tx.in_msg)continue
+const sender=tx.in_msg.source
+const value=Number(tx.in_msg.value)
+const payload=tx.in_msg.message||""
+if(sender===address&&value>=ton*1e9&&payload.includes(nonce)){
+valid=tx
+break
+}
+}
 
-    for (let tx of data.result) {
-      if (!tx.in_msg) continue
+if(!valid)return res.json({error:"notfound"})
 
-      const sender = tx.in_msg.source
-      const value = Number(tx.in_msg.value)
-      const payload = tx.in_msg.message || ""
+const hash=valid.transaction_id.hash
+const usedTx=await redis.get("tx:"+hash)
+if(usedTx)return res.json({error:"used"})
 
-      if (
-        sender === address &&
-        value >= ton * 1e9 &&
-        payload.includes(nonce)
-      ) {
-        valid = tx
-        break
-      }
-    }
+await redis.set("tx:"+hash,1)
+await redis.set("nonce:"+nonce,1)
 
-    if (!valid) {
-      return res.json({ error: "notfound" })
-    }
+total+=ton
+await redis.set(userKey,total)
 
-    const hash = valid.transaction_id.hash
-    const usedTx = await redis.get("tx:" + hash)
+let global=(await redis.get("global"))||0
+global+=ton
+await redis.set("global",global)
 
-    if (usedTx) {
-      return res.json({ error: "used" })
-    }
+let users=(await redis.get("users"))||0
+const exists=await redis.get("user_exists:"+address)
 
-    await redis.set("tx:" + hash, 1)
-    await redis.set("nonce:" + nonce, 1)
+if(!exists){
+users+=1
+await redis.set("users",users)
+await redis.set("user_exists:"+address,1)
+}
 
-    total += ton
-    await redis.set(userKey, total)
-
-    let global = (await redis.get("global")) || 0
-    global += ton
-    await redis.set("global", global)
-
-    let users = (await redis.get("users")) || 0
-    const exists = await redis.get("user_exists:" + address)
-
-    if (!exists) {
-      users += 1
-      await redis.set("users", users)
-      await redis.set("user_exists:" + address, 1)
-    }
-
-    return res.json({ success: true, total })
-  } catch (e) {
-    return res.json({ error: "server" })
-  }
+return res.json({success:true,total})
+}catch(e){
+return res.json({error:"server"})
+}
 }
