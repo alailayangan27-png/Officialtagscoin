@@ -1,4 +1,4 @@
-import{connectWallet,sendTON}from'./ton.js'
+import{getWallet,sendTON}from'./ton.js'
 import{CONFIG}from'./config.js'
 
 let address=null
@@ -17,7 +17,7 @@ return v
 }
 
 function nonce(){
-return Math.random().toString(36).substring(2)+Date.now()
+return Math.random().toString(36)+Date.now()
 }
 
 function update(){
@@ -29,10 +29,13 @@ if(parseInt(b.dataset.value)===ton)b.classList.add("active")
 })
 }
 
-document.getElementById("connectBtn").onclick=async()=>{
-const w=await connectWallet()
+setInterval(()=>{
+const w=getWallet()
+if(w){
 address=w.account.address
+status.innerText="Connected"
 }
+},1000)
 
 input.oninput=e=>{
 ton=clamp(parseInt(e.target.value)||1)
@@ -66,7 +69,7 @@ status.innerText="Confirm transaction..."
 
 await sendTON(ton,CONFIG.RECEIVER,n)
 
-status.innerText="Waiting for verification..."
+status.innerText="Waiting verification..."
 
 await verify(address,ton,n)
 }
@@ -78,12 +81,12 @@ const res=await fetch("/api/verify",{method:"POST",body:JSON.stringify({address,
 const data=await res.json()
 if(data.success){
 loader.style.display="none"
-status.innerText="Success. Total minted: "+data.total+" TON"
+status.innerText="Success "+data.total+" TON"
 return
 }
 }
 loader.style.display="none"
-status.innerText="Transaction not found"
+status.innerText="Not found"
 }
 
 update()
