@@ -5,7 +5,7 @@ url:process.env.UPSTASH_REDIS_REST_URL,
 token:process.env.UPSTASH_REDIS_REST_TOKEN
 })
 
-const RECEIVER="UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX"
+const RECEIVER="UQA6gWiJPP6pTMkc6mpVMSzNW21n0UfCpz4chW4Sts3_nJEU"
 
 export default async function handler(req,res){
 try{
